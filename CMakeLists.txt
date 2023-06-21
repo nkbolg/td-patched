@@ -39,6 +39,7 @@ endif()
 include(PreventInSourceBuild)
 prevent_in_source_build()
 
+option(TD_ENABLE_TESTS "Use "ON" to enable tests for TDLIB")
 option(TD_ENABLE_JNI "Use \"ON\" to enable JNI-compatible TDLib API.")
 option(TD_ENABLE_DOTNET "Use \"ON\" to enable generation of C++/CLI or C++/CX TDLib API bindings.")
 
@@ -46,7 +47,9 @@ if (TD_ENABLE_DOTNET AND (CMAKE_VERSION VERSION_LESS "3.1.0"))
   message(FATAL_ERROR "CMake 3.1.0 or higher is required. You are running version ${CMAKE_VERSION}.")
 endif()
 
-enable_testing()
+if (TD_ENABLE_TESTS)
+  enable_testing()
+endif()
 
 if (POLICY CMP0069)
   option(TD_ENABLE_LTO "Use \"ON\" to enable Link Time Optimization.")
@@ -206,9 +209,9 @@ add_subdirectory(tdnet)
 add_subdirectory(sqlite)
 
 add_subdirectory(tddb)
-
-add_subdirectory(test)
-
+if (TD_ENABLE_TESTS)
+  add_subdirectory(test)
+endif()
 if (NOT CMAKE_CROSSCOMPILING)
   add_subdirectory(benchmark)
 endif()
@@ -217,7 +220,9 @@ endif()
 get_directory_property(HAS_PARENT PARENT_DIRECTORY)
 if (HAS_PARENT)
   set(TL_TD_JSON_AUTO ${TL_TD_JSON_AUTO_SOURCE} PARENT_SCOPE) # used in tdbot
-  set(TD_TEST_SOURCE ${TD_TEST_SOURCE} PARENT_SCOPE) # used to build tests
+  if (TD_ENABLE_TESTS)
+    set(TD_TEST_SOURCE ${TD_TEST_SOURCE} PARENT_SCOPE) # used to build tests
+  endif()
 endif()
 
 
