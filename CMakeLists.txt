@@ -39,7 +39,7 @@ endif()
 include(PreventInSourceBuild)
 prevent_in_source_build()
 
-option(TD_ENABLE_TESTS "Use "ON" to enable tests for TDLIB")
+option(TD_ENABLE_TESTS "Use \"ON\" to enable tests for TDLIB")
 option(TD_ENABLE_JNI "Use \"ON\" to enable JNI-compatible TDLib API.")
 option(TD_ENABLE_DOTNET "Use \"ON\" to enable generation of C++/CLI or C++/CX TDLib API bindings.")
 
